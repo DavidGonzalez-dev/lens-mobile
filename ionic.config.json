@@ -1,0 +1,7 @@
+{
+  "name": "lens-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
