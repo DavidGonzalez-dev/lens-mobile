@@ -1,10 +1,11 @@
-import type { AlertState } from "./alert-rule"
+import type { AlertStatus } from './alert-rule';
 
 export interface AlertTransition {
-  id: string
-  ruleId: string
-  fromState: AlertState
-  toState: AlertState
-  value: number
-  tsMs: number
+  id: string;
+  ruleId: string;
+  fromStatus: AlertStatus;
+  toStatus: AlertStatus;
+  /** Metric value that triggered the transition, in the rule's aggregate unit. */
+  value: number;
+  tsMs: number;
 }
