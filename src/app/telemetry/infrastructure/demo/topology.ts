@@ -16,80 +16,81 @@ export interface TopologyNode {
   children: TopologyNode[];
 }
 
-export const entryOperations: TopologyNode[] = [
-  {
-    service: 'frontend',
-    name: 'GET /checkout',
-    kind: SpanKind.SERVER,
-    latencyMs: { min: 1, max: 5 },
-    attributes: { 'http.request.method': 'GET', 'http.route': '/checkout' },
-    children: [
-      {
-        service: 'checkout',
-        name: 'POST /orders',
-        kind: SpanKind.SERVER,
-        latencyMs: { min: 1, max: 5 },
-        attributes: { 'http.request.method': 'POST', 'http.route': '/orders' },
-        children: [
-          {
-            service: 'inventory',
-            name: 'reserve stock',
-            kind: SpanKind.SERVER,
-            latencyMs: { min: 1, max: 5 },
-            attributes: { 'http.request.method': 'POST', 'http.route': '/stock/reserve' },
-            children: [
-              {
-                service: 'inventory',
-                name: 'SELECT stock',
-                kind: SpanKind.CLIENT,
-                latencyMs: { min: 2, max: 10 },
-                attributes: {
-                  'db.system': 'postgresql',
-                  'db.statement': 'SELECT quantity FROM stock WHERE sku = ?',
-                },
-                children: [],
+export const checkoutOperation: TopologyNode = {
+  service: 'frontend',
+  name: 'GET /checkout',
+  kind: SpanKind.SERVER,
+  latencyMs: { min: 1, max: 5 },
+  attributes: { 'http.request.method': 'GET', 'http.route': '/checkout' },
+  children: [
+    {
+      service: 'checkout',
+      name: 'POST /orders',
+      kind: SpanKind.SERVER,
+      latencyMs: { min: 1, max: 5 },
+      attributes: { 'http.request.method': 'POST', 'http.route': '/orders' },
+      children: [
+        {
+          service: 'inventory',
+          name: 'reserve stock',
+          kind: SpanKind.SERVER,
+          latencyMs: { min: 1, max: 5 },
+          attributes: { 'http.request.method': 'POST', 'http.route': '/stock/reserve' },
+          children: [
+            {
+              service: 'inventory',
+              name: 'SELECT stock',
+              kind: SpanKind.CLIENT,
+              latencyMs: { min: 2, max: 10 },
+              attributes: {
+                'db.system': 'postgresql',
+                'db.statement': 'SELECT quantity FROM stock WHERE sku = ?',
               },
-            ],
-          },
-          {
-            service: 'payment',
-            name: 'charge card',
-            kind: SpanKind.SERVER,
-            latencyMs: { min: 50, max: 150 },
-            attributes: { 'http.request.method': 'POST', 'http.route': '/payments' },
-            children: [],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    service: 'frontend',
-    name: 'GET /products',
-    kind: SpanKind.SERVER,
-    latencyMs: { min: 1, max: 5 },
-    attributes: { 'http.request.method': 'GET', 'http.route': '/products' },
-    children: [
-      {
-        service: 'catalog',
-        name: 'list products',
-        kind: SpanKind.SERVER,
-        latencyMs: { min: 1, max: 5 },
-        attributes: { 'http.request.method': 'GET', 'http.route': '/products' },
-        children: [
-          {
-            service: 'catalog',
-            name: 'SELECT products',
-            kind: SpanKind.CLIENT,
-            latencyMs: { min: 2, max: 10 },
-            attributes: {
-              'db.system': 'postgresql',
-              'db.statement': 'SELECT id, name, price FROM products LIMIT 20',
+              children: [],
             },
-            children: [],
+          ],
+        },
+        {
+          service: 'payment',
+          name: 'charge card',
+          kind: SpanKind.SERVER,
+          latencyMs: { min: 50, max: 150 },
+          attributes: { 'http.request.method': 'POST', 'http.route': '/payments' },
+          children: [],
+        },
+      ],
+    },
+  ],
+};
+
+export const productsOperation: TopologyNode = {
+  service: 'frontend',
+  name: 'GET /products',
+  kind: SpanKind.SERVER,
+  latencyMs: { min: 1, max: 5 },
+  attributes: { 'http.request.method': 'GET', 'http.route': '/products' },
+  children: [
+    {
+      service: 'catalog',
+      name: 'list products',
+      kind: SpanKind.SERVER,
+      latencyMs: { min: 1, max: 5 },
+      attributes: { 'http.request.method': 'GET', 'http.route': '/products' },
+      children: [
+        {
+          service: 'catalog',
+          name: 'SELECT products',
+          kind: SpanKind.CLIENT,
+          latencyMs: { min: 2, max: 10 },
+          attributes: {
+            'db.system': 'postgresql',
+            'db.statement': 'SELECT id, name, price FROM products LIMIT 20',
           },
-        ],
-      },
-    ],
-  },
-];
+          children: [],
+        },
+      ],
+    },
+  ],
+};
+
+export const entryOperations: TopologyNode[] = [checkoutOperation, productsOperation];
