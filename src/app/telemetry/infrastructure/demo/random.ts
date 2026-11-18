@@ -4,7 +4,7 @@
  */
 export function mulberry32(seed: number): () => number {
   let state = seed | 0;
-  return function(): number {
+  return function (): number {
     let t = (state += 0x6d2b79f5);
     t = Math.imul(t ^ (t >>> 15), t | 1);
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
@@ -31,14 +31,13 @@ export function pick<T>(rng: () => number, list: T[]): T {
 }
 
 export function randomHex(rng: () => number, lenght: number): string {
-
-  const hexDigits: string[] = '0123456789abcdef'.split('')
-  const hex: string[] = []
+  const hexDigits: string[] = '0123456789abcdef'.split('');
+  const hex: string[] = [];
 
   for (let i = 0; i < lenght; i++) {
-    const digit = pick(rng, hexDigits)
-    hex.push(digit)
+    const digit = pick(rng, hexDigits);
+    hex.push(digit);
   }
 
-  return hex.join('')
+  return hex.join('');
 }

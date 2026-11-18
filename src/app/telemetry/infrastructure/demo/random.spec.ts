@@ -118,31 +118,28 @@ describe('between', () => {
 });
 
 describe('randomHex', () => {
+  it('has the exact lenght required', () => {
+    const rng = mulberry32(42);
 
-  it("has the exact lenght required", () => {
-    const rng = mulberry32(42)
+    const first = randomHex(rng, 16);
+    const second = randomHex(rng, 32);
 
-    const first = randomHex(rng, 16)
-    const second = randomHex(rng, 32)
-
-
-    expect(first.length).toEqual(16)
-    expect(second.length).toEqual(32)
-  })
+    expect(first.length).toEqual(16);
+    expect(second.length).toEqual(32);
+  });
 
   it('contains only hex characters', () => {
-    const rng = mulberry32(42)
-    expect(randomHex(rng, 32)).toMatch(/^[0-9a-f]+$/)
-  })
+    const rng = mulberry32(42);
+    expect(randomHex(rng, 32)).toMatch(/^[0-9a-f]+$/);
+  });
 
   it('gives the same id with the same seed', () => {
-    const rng1 = mulberry32(42)
-    const rng2 = mulberry32(42)
+    const rng1 = mulberry32(42);
+    const rng2 = mulberry32(42);
 
-    const first = randomHex(rng1, 32)
-    const second = randomHex(rng2, 32)
+    const first = randomHex(rng1, 32);
+    const second = randomHex(rng2, 32);
 
-    expect(first).toEqual(second)
-  })
-
-})
+    expect(first).toEqual(second);
+  });
+});

@@ -1,34 +1,28 @@
-import { it, describe, expect } from "vitest";
+import { it, describe, expect } from 'vitest';
 
-import type { TopologyNode } from "./topology";
-import { entryOperations } from "./topology";
+import type { TopologyNode } from './topology';
+import { entryOperations } from './topology';
 
 describe('topology', () => {
-
-  it("has valid latency range in every node", () => {
-
+  it('has valid latency range in every node', () => {
     for (const operation of entryOperations) {
-      const result = checkLatency(operation)
-      expect(result).toBe(true)
+      const result = checkLatency(operation);
+      expect(result).toBe(true);
     }
-  })
-})
+  });
+});
 
 function checkLatency(node: TopologyNode): boolean {
-
   if (node.latencyMs.min > node.latencyMs.max) {
-    return false
+    return false;
   }
 
   for (const child of node.children) {
-    const passes = checkLatency(child)
+    const passes = checkLatency(child);
     if (!passes) {
-      return false
+      return false;
     }
   }
 
-  return true
-
+  return true;
 }
-
-
