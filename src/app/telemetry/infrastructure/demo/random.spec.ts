@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { between, mulberry32, pick } from './random';
+import { between, mulberry32, pick, randomHex } from './random';
 
 describe('mulberry32', () => {
   it('produces the same sequence for the same seed', () => {
@@ -116,3 +116,33 @@ describe('between', () => {
     expect(between(rng, 1, 6)).toBe(2);
   });
 });
+
+describe('randomHex', () => {
+
+  it("has the exact lenght required", () => {
+    const rng = mulberry32(42)
+
+    const first = randomHex(rng, 16)
+    const second = randomHex(rng, 32)
+
+
+    expect(first.length).toEqual(16)
+    expect(second.length).toEqual(32)
+  })
+
+  it('contains only hex characters', () => {
+    const rng = mulberry32(42)
+    expect(randomHex(rng, 32)).toMatch(/^[0-9a-f]+$/)
+  })
+
+  it('gives the same id with the same seed', () => {
+    const rng1 = mulberry32(42)
+    const rng2 = mulberry32(42)
+
+    const first = randomHex(rng1, 32)
+    const second = randomHex(rng2, 32)
+
+    expect(first).toEqual(second)
+  })
+
+})
