@@ -16,3 +16,6 @@ export type { AlertRepository } from './alert-repository';
 
 // Pagination
 export type { Pagination, Page } from './pagination';
+
+// Build Traces
+export { summarizeTraces } from './summarize-traces';
