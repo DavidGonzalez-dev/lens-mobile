@@ -17,8 +17,9 @@ export type { AlertRepository } from './alert-repository';
 // Pagination
 export type { Pagination, Page } from './pagination';
 
-// Build Traces
+// Trace analysis
 export { summarizeTraces } from './summarize-traces';
+export { criticalPath } from './critical-path';
 
 // RED metrics
 export { percentile } from './percentile';
