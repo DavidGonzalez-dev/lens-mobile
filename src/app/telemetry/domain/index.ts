@@ -25,3 +25,7 @@ export { criticalPath } from './critical-path';
 export { percentile } from './percentile';
 export { buildRedPoints } from './build-red-points';
 export { summarizeServiceRed } from './summarize-service-red';
+
+// Alerts
+export { evaluateRule } from './evaluate-rule';
+export type { RuleEvaluation } from './evaluate-rule';
