@@ -1,5 +1,5 @@
-import type { AlertRule } from './alert-rule';
-import type { AlertTransition } from './alert-transition';
+import type { AlertRule } from '../entities/alert-rule';
+import type { AlertTransition } from '../entities/alert-transition';
 
 export interface AlertRepository {
   getAlertRules(service?: AlertRule['service']): Promise<AlertRule[]>;

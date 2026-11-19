@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import type { RedPoint } from './red-point';
+import type { RedPoint } from '../entities/red-point';
+
 import { summarizeServiceRed } from './summarize-service-red';
 
 const MINUTE_MS = 60_000;

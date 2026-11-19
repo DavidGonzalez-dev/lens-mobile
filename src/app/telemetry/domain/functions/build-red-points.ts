@@ -1,6 +1,7 @@
+import type { RedPoint } from '../entities/red-point';
+import { SpanKind, SpanStatusCode, type Span } from '../entities/span';
+
 import { percentile } from './percentile';
-import type { RedPoint } from './red-point';
-import { SpanKind, SpanStatusCode, type Span } from './span';
 
 export function buildRedPoints(spans: Span[]): RedPoint[] {
   const serverSpans = spans.filter((span) => span.kind === SpanKind.SERVER);

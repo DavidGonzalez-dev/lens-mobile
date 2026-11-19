@@ -1,5 +1,5 @@
-import { SpanStatusCode, type Span } from './span';
-import type { Trace } from './trace';
+import { SpanStatusCode, type Span } from '../entities/span';
+import type { Trace } from '../entities/trace';
 
 export function summarizeTraces(spans: Span[]): Trace[] {
   const spansByTrace = getSpansByTrace(spans);

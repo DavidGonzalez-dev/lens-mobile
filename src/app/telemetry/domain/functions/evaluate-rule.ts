@@ -1,7 +1,8 @@
-import type { AlertRule } from './alert-rule';
-import { AlertStatus, Aggregate } from './alert-rule';
-import type { RedPoint } from './red-point';
-import type { ServiceRed } from './service-red';
+import type { AlertRule } from '../entities/alert-rule';
+import { AlertStatus, Aggregate } from '../entities/alert-rule';
+import type { RedPoint } from '../entities/red-point';
+import type { ServiceRed } from '../entities/service-red';
+
 import { summarizeServiceRed } from './summarize-service-red';
 
 export interface RuleEvaluation {

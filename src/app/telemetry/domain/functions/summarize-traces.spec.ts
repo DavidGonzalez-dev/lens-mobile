@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { SpanKind, SpanStatusCode, type Span } from './span';
+import { SpanKind, SpanStatusCode, type Span } from '../entities/span';
+
 import { summarizeTraces } from './summarize-traces';
 
 /** Builds a healthy span; each test overrides only the fields it cares about. */

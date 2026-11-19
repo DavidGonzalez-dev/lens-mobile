@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { Aggregate, AlertStatus, type AlertRule } from './alert-rule';
+import { Aggregate, AlertStatus, type AlertRule } from '../entities/alert-rule';
+import type { RedPoint } from '../entities/red-point';
+
 import { evaluateRule } from './evaluate-rule';
-import type { RedPoint } from './red-point';
 
 const MINUTE_MS = 60_000;
 const MS = 1_000_000;

@@ -1,4 +1,4 @@
-import type { Span } from './span';
+import type { Span } from '../entities/span';
 
 export function criticalPath(spans: Span[]): string[] {
   const root = spans.find((span) => span.parentSpanId === null);

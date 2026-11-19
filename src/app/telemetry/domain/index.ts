@@ -1,31 +1,29 @@
-// Types
-export type { AlertRule } from './alert-rule';
-export type { AlertTransition } from './alert-transition';
-export type { RedPoint } from './red-point';
-export type { ServiceRed } from './service-red';
-export type { AttributeValue, Span, SpanEvent } from './span';
-export type { Trace } from './trace';
+// Entities
+export type { AlertRule } from './entities/alert-rule';
+export type { AlertTransition } from './entities/alert-transition';
+export type { RedPoint } from './entities/red-point';
+export type { ServiceRed } from './entities/service-red';
+export type { AttributeValue, Span, SpanEvent } from './entities/span';
+export type { TimeRange } from './entities/time-range';
+export type { Trace } from './entities/trace';
+export { Aggregate, AlertStatus } from './entities/alert-rule';
+export { SpanKind, SpanStatusCode } from './entities/span';
 
-// Enums
-export { Aggregate, AlertStatus } from './alert-rule';
-export { SpanKind, SpanStatusCode } from './span';
+// Repositories (ports)
+export type { AlertRepository } from './repositories/alert-repository';
+export type { Page, Pagination } from './repositories/pagination';
+export type { TelemetryRepository, TraceQuery } from './repositories/telemetry-repository';
 
-// Repositories
-export type { TelemetryRepository, TimeRange, TraceQuery } from './telemetry-repository';
-export type { AlertRepository } from './alert-repository';
+// Functions: traces
+export { criticalPath } from './functions/critical-path';
+export { summarizeTraces } from './functions/summarize-traces';
 
-// Pagination
-export type { Pagination, Page } from './pagination';
+// Functions: RED metrics
+export { buildRedPoints } from './functions/build-red-points';
+export { percentile } from './functions/percentile';
+export { summarizeServiceRed } from './functions/summarize-service-red';
+export { timeRangeToMs } from './functions/time-range-to-ms';
 
-// Trace analysis
-export { summarizeTraces } from './summarize-traces';
-export { criticalPath } from './critical-path';
-
-// RED metrics
-export { percentile } from './percentile';
-export { buildRedPoints } from './build-red-points';
-export { summarizeServiceRed } from './summarize-service-red';
-
-// Alerts
-export { evaluateRule } from './evaluate-rule';
-export type { RuleEvaluation } from './evaluate-rule';
+// Functions: alerts
+export { evaluateRule } from './functions/evaluate-rule';
+export type { RuleEvaluation } from './functions/evaluate-rule';

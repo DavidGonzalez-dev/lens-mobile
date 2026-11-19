@@ -1,10 +1,10 @@
-import type { Page, Pagination } from './pagination';
-import type { RedPoint } from './red-point';
-import type { ServiceRed } from './service-red';
-import type { Span } from './span';
-import type { Trace } from './trace';
+import type { RedPoint } from '../entities/red-point';
+import type { ServiceRed } from '../entities/service-red';
+import type { Span } from '../entities/span';
+import type { TimeRange } from '../entities/time-range';
+import type { Trace } from '../entities/trace';
 
-export type TimeRange = '15m' | '1h' | '24h';
+import type { Page, Pagination } from './pagination';
 
 export interface TraceQuery {
   serviceName?: Trace['rootService'];

@@ -1,5 +1,5 @@
-import type { RedPoint } from './red-point';
-import type { ServiceRed } from './service-red';
+import type { RedPoint } from '../entities/red-point';
+import type { ServiceRed } from '../entities/service-red';
 
 export function summarizeServiceRed(points: RedPoint[], windowMs: number): ServiceRed[] {
   const pointsByService = getPointsByService(points);

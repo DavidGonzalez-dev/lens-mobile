@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
+import { SpanKind, SpanStatusCode, type Span } from '../entities/span';
+
 import { criticalPath } from './critical-path';
-import { SpanKind, SpanStatusCode, type Span } from './span';
 
 /** Builds a span that runs from `startMs` to `startMs + durationMs`. */
 function makeSpan(spanId: string, parentSpanId: string | null, startMs: number, durationMs: number): Span {

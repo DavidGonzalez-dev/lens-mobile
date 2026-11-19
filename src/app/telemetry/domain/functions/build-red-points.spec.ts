@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
+import { SpanKind, SpanStatusCode, type Span } from '../entities/span';
+
 import { buildRedPoints } from './build-red-points';
-import { SpanKind, SpanStatusCode, type Span } from './span';
 
 const MINUTE_MS = 60_000;
 const MS = 1_000_000;
