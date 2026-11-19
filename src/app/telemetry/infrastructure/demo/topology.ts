@@ -6,6 +6,14 @@ export interface LatencyRange {
   max: number;
 }
 
+/** How a node fails. When it fails, its span gets ERROR status, the message and the extra attributes. */
+export interface ErrorBehavior {
+  /** Probability of failing, between 0 (never) and 1 (always). */
+  rate: number;
+  message: string;
+  attributes: Span['attributes'];
+}
+
 /** One step of the demo shop call graph. The generator turns each node into a span. */
 export interface TopologyNode {
   service: Span['service'];
@@ -14,6 +22,8 @@ export interface TopologyNode {
   latencyMs: LatencyRange;
   attributes: Span['attributes'];
   children: TopologyNode[];
+  /** Missing means the node never fails. */
+  error?: ErrorBehavior;
 }
 
 export const checkoutOperation: TopologyNode = {

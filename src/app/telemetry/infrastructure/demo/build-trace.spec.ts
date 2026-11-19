@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
+import { SpanKind, SpanStatusCode } from '../../domain';
+
 import { buildTrace } from './build-trace';
 import { mulberry32 } from './random';
-import { entryOperations } from './topology';
+import { entryOperations, type ErrorBehavior, type TopologyNode } from './topology';
 
 describe('build-trace', () => {
   it('all children are inside the parent', () => {
@@ -60,5 +62,54 @@ describe('build-trace', () => {
     const trace = buildTrace(rng, entryOperations[0], 1000);
 
     expect(trace[0].startMs).toBe(1000);
+  });
+
+  describe('errors', () => {
+    const createNode = (error?: ErrorBehavior): TopologyNode => ({
+      service: 'payment',
+      name: 'charge card',
+      kind: SpanKind.SERVER,
+      latencyMs: { min: 1, max: 5 },
+      attributes: { 'http.route': '/payments' },
+      children: [],
+      error,
+    });
+
+    const unavailable: ErrorBehavior = {
+      rate: 1,
+      message: '503 Service Unavailable',
+      attributes: { 'http.response.status_code': 503 },
+    };
+
+    it('a node with rate 1 always fails', () => {
+      const [span] = buildTrace(mulberry32(42), createNode(unavailable), 1000);
+
+      expect(span.statusCode).toBe(SpanStatusCode.ERROR);
+      expect(span.statusMessage).toBe('503 Service Unavailable');
+      expect(span.attributes['http.response.status_code']).toBe(503);
+      expect(span.attributes['http.route']).toBe('/payments');
+    });
+
+    it('a node with rate 0 never fails', () => {
+      const [span] = buildTrace(mulberry32(42), createNode({ ...unavailable, rate: 0 }), 1000);
+
+      expect(span.statusCode).toBe(SpanStatusCode.OK);
+      expect(span.statusMessage).toBe(null);
+      expect(span.attributes['http.response.status_code']).toBeUndefined();
+    });
+
+    it('a node without error is healthy', () => {
+      const [span] = buildTrace(mulberry32(42), createNode(), 1000);
+
+      expect(span.statusCode).toBe(SpanStatusCode.OK);
+      expect(span.statusMessage).toBe(null);
+    });
+
+    it('a failed span does not modify the node attributes', () => {
+      const node = createNode(unavailable);
+      buildTrace(mulberry32(42), node, 1000);
+
+      expect(node.attributes).toEqual({ 'http.route': '/payments' });
+    });
   });
 });

@@ -34,6 +34,10 @@ function buildSubtree(
   }
 
   const durationMs = cursorMs - startMs;
+  // Only draw a random number when the node can fail, so healthy data stays the same.
+  const error = node.error;
+  const failed = error !== undefined && rng() < error.rate;
+
   const span: Span = {
     traceId: traceId,
     spanId: spanId,
@@ -43,10 +47,10 @@ function buildSubtree(
     kind: node.kind,
     startMs: startMs,
     durationNs: durationMs * 1_000_000,
-    statusCode: SpanStatusCode.OK,
-    statusMessage: null,
+    statusCode: failed ? SpanStatusCode.ERROR : SpanStatusCode.OK,
+    statusMessage: failed ? error!.message : null,
     events: [],
-    attributes: { ...node.attributes },
+    attributes: failed ? { ...node.attributes, ...error!.attributes } : { ...node.attributes },
   };
 
   return { spans: [span, ...childSpans], durationMs: durationMs };
