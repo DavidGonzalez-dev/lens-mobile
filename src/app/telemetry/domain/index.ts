@@ -23,3 +23,4 @@ export { summarizeTraces } from './summarize-traces';
 // RED metrics
 export { percentile } from './percentile';
 export { buildRedPoints } from './build-red-points';
+export { summarizeServiceRed } from './summarize-service-red';
