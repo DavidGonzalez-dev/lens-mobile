@@ -28,7 +28,7 @@ export function summarizeTraces(spans: Span[]): Trace[] {
   return traces.sort((a, b) => b.startMs - a.startMs || a.traceId.localeCompare(b.traceId));
 }
 
-function getSpansByTrace(spans: Span[]): Map<string, Span[]> {
+export function getSpansByTrace(spans: Span[]): Map<string, Span[]> {
   const spansByTrace = new Map<string, Span[]>();
 
   for (const span of spans) {

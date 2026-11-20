@@ -16,7 +16,7 @@ export type { TelemetryRepository, TraceQuery } from './repositories/telemetry-r
 
 // Functions: traces
 export { criticalPath } from './functions/critical-path';
-export { summarizeTraces } from './functions/summarize-traces';
+export { getSpansByTrace, summarizeTraces } from './functions/summarize-traces';
 
 // Functions: RED metrics
 export { buildRedPoints } from './functions/build-red-points';
