@@ -21,6 +21,7 @@ export { getSpansByTrace, summarizeTraces } from './functions/summarize-traces';
 // Functions: RED metrics
 export { buildRedPoints } from './functions/build-red-points';
 export { percentile } from './functions/percentile';
+export { sortServices, type ServiceSort } from './functions/sort-services';
 export { summarizeServiceRed } from './functions/summarize-service-red';
 export { timeRangeToMs } from './functions/time-range-to-ms';
 
