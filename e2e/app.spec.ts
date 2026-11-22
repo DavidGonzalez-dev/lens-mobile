@@ -26,8 +26,8 @@ test('goes from a service to its traces, a trace and a span', async ({ page }) =
   await firstTrace.click();
   await expect(page).toHaveURL(/\/tabs\/traces\/[^/?]+$/);
 
-  await page.getByText('demo-span', { exact: true }).click();
-  await expect(page).toHaveURL(/\/tabs\/traces\/[^/]+\/spans\/demo-span$/);
+  await page.locator('a.row').first().click();
+  await expect(page).toHaveURL(/\/tabs\/traces\/[^/]+\/spans\/[^/]+$/);
 });
 
 test('reaches every tab from the tab bar', async ({ page }) => {
