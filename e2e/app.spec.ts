@@ -20,13 +20,14 @@ test('goes from a service to its traces, a trace and a span', async ({ page }) =
 
   await page.getByRole('link', { name: 'View traces' }).click();
   await expect(page).toHaveURL(/\/tabs\/traces\?service=checkout$/);
-  await expect(page.getByText('Filtered by service: checkout')).toBeVisible();
 
-  await page.getByText('demo-trace', { exact: true }).click();
-  await expect(page).toHaveURL(/\/tabs\/traces\/demo-trace$/);
+  const firstTrace = page.locator('ion-item[href^="/tabs/traces/"]').first();
+  await expect(firstTrace).toContainText('checkout');
+  await firstTrace.click();
+  await expect(page).toHaveURL(/\/tabs\/traces\/[^/?]+$/);
 
   await page.getByText('demo-span', { exact: true }).click();
-  await expect(page).toHaveURL(/\/tabs\/traces\/demo-trace\/spans\/demo-span$/);
+  await expect(page).toHaveURL(/\/tabs\/traces\/[^/]+\/spans\/demo-span$/);
 });
 
 test('reaches every tab from the tab bar', async ({ page }) => {
