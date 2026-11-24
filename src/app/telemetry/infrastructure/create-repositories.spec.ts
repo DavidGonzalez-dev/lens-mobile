@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
+import { createAlertRepository, createTelemetryRepository } from './create-repositories';
 import { DEFAULT_ALERT_RULES } from './demo/default-alert-rules';
-import { createAlertRepository, createTelemetryRepository } from './provide-telemetry';
 
 const NOW_MS = 1_763_400_000_000;
 
-describe('provideTelemetry factories', () => {
+describe('repository factories', () => {
   it('creates a telemetry repository loaded with the demo day', async () => {
     const repository = createTelemetryRepository(NOW_MS);
 

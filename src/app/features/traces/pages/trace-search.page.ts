@@ -25,7 +25,7 @@ import {
 } from '@ionic/angular';
 
 import type { Trace, TraceQuery } from '../../../telemetry/domain';
-import { TELEMETRY_REPOSITORY } from '../../../telemetry/telemetry.tokens';
+import { TELEMETRY_DATA_VERSION, TELEMETRY_REPOSITORY } from '../../../telemetry/telemetry.tokens';
 import { DEFAULT_TRACE_FILTERS, toTraceQuery, type TraceFilters } from '../trace-filters';
 
 /** RF-03 asks for pages of 50. */
@@ -162,11 +162,16 @@ export class TraceSearchPage {
   protected readonly error = signal(false);
 
   private readonly telemetry = inject(TELEMETRY_REPOSITORY);
+  /** Read in the resource params so another demo scenario reloads the screen. */
+  private readonly dataVersion = inject(TELEMETRY_DATA_VERSION);
   /** Each search gets a number; an answer that arrives after a newer search started is ignored. */
   private searchId = 0;
 
   /** Options for the service select. */
-  protected readonly services = resource({ loader: () => this.telemetry.getServiceRed('24h') });
+  protected readonly services = resource({
+    params: () => this.dataVersion(),
+    loader: () => this.telemetry.getServiceRed('24h'),
+  });
   protected readonly serviceNames = computed(() =>
     this.services.hasValue() ? this.services.value().map((service) => service.service) : [],
   );
@@ -183,6 +188,7 @@ export class TraceSearchPage {
     // Every time the filters change, start again from the first page.
     effect(() => {
       const query = this.query();
+      this.dataVersion(); // another scenario loaded → search again
       untracked(() => void this.loadFirstPage(query));
     });
   }

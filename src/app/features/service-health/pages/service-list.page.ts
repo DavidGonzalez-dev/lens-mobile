@@ -17,7 +17,7 @@ import {
 } from '@ionic/angular';
 
 import { sortServices, type ServiceSort, type TimeRange } from '../../../telemetry/domain';
-import { TELEMETRY_REPOSITORY } from '../../../telemetry/telemetry.tokens';
+import { TELEMETRY_DATA_VERSION, TELEMETRY_REPOSITORY } from '../../../telemetry/telemetry.tokens';
 
 const NS_PER_MS = 1_000_000;
 
@@ -98,11 +98,13 @@ export class ServiceListPage {
   protected readonly sortBy = signal<ServiceSort>('errors');
 
   private readonly telemetry = inject(TELEMETRY_REPOSITORY);
+  /** Read in the resource params so another demo scenario reloads the screen. */
+  private readonly dataVersion = inject(TELEMETRY_DATA_VERSION);
 
   /** Reloads by itself every time `range` changes. */
   protected readonly services = resource({
-    params: () => this.range(),
-    loader: ({ params: range }) => this.telemetry.getServiceRed(range),
+    params: () => ({ range: this.range(), version: this.dataVersion() }),
+    loader: ({ params }) => this.telemetry.getServiceRed(params.range),
   });
 
   /** Re-sorts by itself when the data or `sortBy` change, without asking the repository again. */

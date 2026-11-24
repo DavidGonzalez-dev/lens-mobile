@@ -74,3 +74,22 @@ test('fires the payment rule and records it in the history', async ({ page }) =>
   await expect(page).toHaveURL(/\/tabs\/alerts\/history$/);
   await expect(page.locator('app-alert-history ion-item', { hasText: 'Payment error rate' })).toContainText('FIRED');
 });
+
+test('switches the theme and loads another demo scenario', async ({ page }) => {
+  await page.goto('/tabs/settings');
+
+  await page.locator('ion-segment-button', { hasText: 'Dark' }).click();
+  await expect(page.locator('html')).toHaveClass(/ion-palette-dark/);
+
+  await page.locator('ion-select').click();
+  await page.getByRole('radio', { name: 'Retry storm' }).click();
+  await page.getByRole('button', { name: 'OK' }).click();
+  await page.locator('ion-button', { hasText: 'Load scenario' }).click();
+  await expect(page.getByText('Retry storm loaded')).toBeVisible();
+
+  // Both settings survive a reload.
+  await page.reload();
+  await expect(page.locator('html')).toHaveClass(/ion-palette-dark/);
+  await expect(page.getByText('(loaded)')).toBeVisible();
+  await expect(page.locator('ion-select')).toContainText('Retry storm');
+});

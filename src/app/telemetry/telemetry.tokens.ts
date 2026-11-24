@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, type Signal } from '@angular/core';
 
 import type { AlertRepository, TelemetryRepository } from './domain';
 
@@ -9,3 +9,9 @@ import type { AlertRepository, TelemetryRepository } from './domain';
  */
 export const TELEMETRY_REPOSITORY = new InjectionToken<TelemetryRepository>('TelemetryRepository');
 export const ALERT_REPOSITORY = new InjectionToken<AlertRepository>('AlertRepository');
+
+/**
+ * Goes up by one every time the telemetry data is replaced (another demo scenario loaded).
+ * Screens read it inside their resources so they reload by themselves.
+ */
+export const TELEMETRY_DATA_VERSION = new InjectionToken<Signal<number>>('TelemetryDataVersion');

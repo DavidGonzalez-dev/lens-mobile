@@ -21,7 +21,7 @@ import {
 
 import { type ChartSeries, LineChartComponent } from '../../../shared/line-chart.component';
 import { buildServiceSeries, topOperationsByLatency, type TimeRange } from '../../../telemetry/domain';
-import { TELEMETRY_REPOSITORY } from '../../../telemetry/telemetry.tokens';
+import { TELEMETRY_DATA_VERSION, TELEMETRY_REPOSITORY } from '../../../telemetry/telemetry.tokens';
 
 const NS_PER_MS = 1_000_000;
 
@@ -128,10 +128,12 @@ export class ServiceDetailPage {
   protected readonly range = signal<TimeRange>('15m');
 
   private readonly telemetry = inject(TELEMETRY_REPOSITORY);
+  /** Read in the resource params so another demo scenario reloads the screen. */
+  private readonly dataVersion = inject(TELEMETRY_DATA_VERSION);
 
   /** Reloads by itself when the service or the range change. */
   protected readonly points = resource({
-    params: () => ({ service: this.service(), range: this.range() }),
+    params: () => ({ service: this.service(), range: this.range(), version: this.dataVersion() }),
     loader: ({ params }) => this.telemetry.getRedSeries(params.service, params.range),
   });
 
