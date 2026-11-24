@@ -49,7 +49,16 @@ function buildSubtree(
     durationNs: durationMs * 1_000_000,
     statusCode: failed ? SpanStatusCode.ERROR : SpanStatusCode.OK,
     statusMessage: failed ? error!.message : null,
-    events: [],
+    // OpenTelemetry records a failure as an `exception` event at the moment the span ends.
+    events: failed
+      ? [
+          {
+            name: 'exception',
+            timestampMs: startMs + durationMs,
+            attributes: { 'exception.type': 'HttpError', 'exception.message': error!.message },
+          },
+        ]
+      : [],
     attributes: failed ? { ...node.attributes, ...error!.attributes } : { ...node.attributes },
   };
 

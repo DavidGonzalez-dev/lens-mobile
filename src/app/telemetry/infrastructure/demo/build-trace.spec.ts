@@ -90,6 +90,24 @@ describe('build-trace', () => {
       expect(span.attributes['http.route']).toBe('/payments');
     });
 
+    it('a failed span records an exception event when it ends', () => {
+      const [span] = buildTrace(mulberry32(42), createNode(unavailable), 1000);
+
+      expect(span.events).toEqual([
+        {
+          name: 'exception',
+          timestampMs: 1000 + span.durationNs / 1_000_000,
+          attributes: { 'exception.type': 'HttpError', 'exception.message': '503 Service Unavailable' },
+        },
+      ]);
+    });
+
+    it('a healthy span has no events', () => {
+      const [span] = buildTrace(mulberry32(42), createNode({ ...unavailable, rate: 0 }), 1000);
+
+      expect(span.events).toEqual([]);
+    });
+
     it('a node with rate 0 never fails', () => {
       const [span] = buildTrace(mulberry32(42), createNode({ ...unavailable, rate: 0 }), 1000);
 

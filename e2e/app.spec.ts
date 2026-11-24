@@ -28,6 +28,7 @@ test('goes from a service to its traces, a trace and a span', async ({ page }) =
 
   await page.locator('a.row').first().click();
   await expect(page).toHaveURL(/\/tabs\/traces\/[^/]+\/spans\/[^/]+$/);
+  await expect(page.getByText('Attributes', { exact: true })).toBeVisible();
 });
 
 test('reaches every tab from the tab bar', async ({ page }) => {
