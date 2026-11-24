@@ -53,3 +53,24 @@ test('opens the alert history and the rule editor', async ({ page }) => {
   await expect(page).toHaveURL(/\/tabs\/alerts\/new$/);
   await expect(page.getByText('New rule')).toBeVisible();
 });
+
+test('shows validation errors on an empty rule', async ({ page }) => {
+  await page.goto('/tabs/alerts/new');
+
+  await page.locator('ion-button', { hasText: 'Save' }).click();
+
+  await expect(page.getByText('Name is required.')).toBeVisible();
+  await expect(page.getByText('Pick a service.')).toBeVisible();
+  await expect(page).toHaveURL(/\/tabs\/alerts\/new$/);
+});
+
+test('fires the payment rule and records it in the history', async ({ page }) => {
+  await page.goto('/tabs/alerts');
+
+  const paymentRule = page.locator('ion-item', { hasText: 'Payment error rate' });
+  await expect(paymentRule).toContainText('FIRING');
+
+  await page.getByRole('link', { name: 'History' }).click();
+  await expect(page).toHaveURL(/\/tabs\/alerts\/history$/);
+  await expect(page.locator('app-alert-history ion-item', { hasText: 'Payment error rate' })).toContainText('FIRED');
+});

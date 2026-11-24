@@ -28,5 +28,6 @@ export { timeRangeToMs } from './functions/time-range-to-ms';
 export { topOperationsByLatency, type OperationLatency } from './functions/top-operations';
 
 // Functions: alerts
+export { detectTransition } from './functions/detect-transition';
 export { evaluateRule } from './functions/evaluate-rule';
 export type { RuleEvaluation } from './functions/evaluate-rule';
