@@ -17,6 +17,7 @@ test('goes from a service to its traces, a trace and a span', async ({ page }) =
 
   await page.getByText('checkout', { exact: true }).click();
   await expect(page).toHaveURL(/\/tabs\/services\/checkout$/);
+  await expect(page.getByText('Slowest operations (p99)')).toBeVisible();
 
   await page.getByRole('link', { name: 'View traces' }).click();
   await expect(page).toHaveURL(/\/tabs\/traces\?service=checkout$/);
